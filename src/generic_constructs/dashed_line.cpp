@@ -4,35 +4,24 @@ DashedLine::DashedLine(sf::Vector2f pointA, sf::Vector2f pointB, float linesLeng
 	initializeLinesArray(pointA, pointB, linesLength, lineColor);
 }
 
-// Lines will always be drawn from pointA -> pointB and not the other way around
 void DashedLine::initializeLinesArray(sf::Vector2f pointA, sf::Vector2f pointB, float linesLength, sf::Color lineColor) {
-	// 1) Calculate the amount of lines that we will need
+	// 1) Calculate total distance and required number of dashes
 	sf::Vector2f displacement = pointB - pointA;
 	float displacementLen = VecMath::len(displacement);
 	int numOfLines = displacementLen / linesLength;
 
-	// 2) Calculate normalized direction vector
+	// 2) Get unit direction vector
 	sf::Vector2f dirVec = VecMath::normalize(displacement);
 
-	// 3) Populate lines array
-	// first, check whether the last line touches the point within some constant of error (2px)
-	sf::Vector2f lastLinePoint = linesLength * numOfLines * dirVec;
+	// 3) Determine final line segment position
+	sf::Vector2f lastLinePoint = (linesLength * numOfLines * dirVec) + pointA;
 
-	float difference;
-	if (lastLinePoint.x > pointB.x) {
-		// point overshoots lastLine by at least 2px
-		difference = -(lastLinePoint.x - pointB.x);
-	}
-	else if (lastLinePoint.x < pointB.x) {
-		// point undershoots lastLine by at least 2x
-		difference = pointB.x - lastLinePoint.x;
-	}
-	else {
-		difference = 0.f;
-	}
+	// 4) Compute correction vector
+	sf::Vector2f differenceVec = pointB - lastLinePoint;
 
+	// 5) Populate the dashed line segments
 	for (int i = 0; i < numOfLines; ++i) {
-		if (i % 2 == 0) {
+		if (i % 2 == 0) {  // Alternate dashes
 			sf::Vector2f subStartPoint = (dirVec * (float)i * linesLength) + pointA;
 			sf::Vector2f subEndPoint = (dirVec * (float)(i + 1) * linesLength) + pointA;
 			Line line(subStartPoint, subEndPoint, lineColor);
@@ -40,11 +29,18 @@ void DashedLine::initializeLinesArray(sf::Vector2f pointA, sf::Vector2f pointB, 
 		}
 	}
 
-	lines[lines.size() - 1].move(sf::Vector2f(difference, 0.f));
+	// 6) Adjust the last segment if necessary
+	if (!lines.empty()) {
+		lines.back().move(differenceVec);
+	}
 }
 
 void DashedLine::draw(sf::RenderWindow& window) {
 	for (int i = 0; i < lines.size(); ++i) {
 		lines[i].draw(window);
 	}
+}
+
+DashedLine::DashedLine() {
+
 }

@@ -1,6 +1,8 @@
 #include <iostream>
 #include "SFML/Graphics.hpp"
 #include "generic_constructs/dashed_line.hpp"
+#include "generic_constructs/point.hpp"
+#include "lb_elements/connector.hpp"
 
 int main()
 {
@@ -9,7 +11,8 @@ int main()
         "Loadbalancing visualizer");
 
     sf::Event e;
-    DashedLine dashedLine(sf::Vector2f(100, 100), sf::Vector2f(300, 300), 5.f, sf::Color::White);
+
+    Connector connector(sf::Vector2f(100, 100), sf::Vector2f(600, 600), { sf::Vector2f(200, 200), sf::Vector2f(150, 275) });
 
     // Main loop
     while (window.isOpen())
@@ -35,8 +38,7 @@ int main()
         window.clear(sf::Color::Black);
 
         // draw
-        dashedLine.draw(window);
-
+        connector.draw(window);
         // display
         window.display();
     }

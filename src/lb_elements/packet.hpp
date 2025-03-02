@@ -1,11 +1,12 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+#include <string>
 
-class Point {
+class Packet {
 private:
-	sf::CircleShape shape;
+	std::string data;
 public:
-	Point(sf::Vector2f position, float radius, sf::Color fillColor);
+	Packet();
 	void draw(sf::RenderWindow& window);
 	void move(sf::Vector2f displacement);
 };

@@ -142,6 +142,7 @@
     <ClCompile Include="src\generic_constructs\dashed_line.cpp" />
     <ClCompile Include="src\generic_constructs\line.cpp" />
     <ClCompile Include="src\generic_constructs\point.cpp" />
+    <ClCompile Include="src\lb_elements\connector.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\math_utils\vec_math.hpp" />
   </ItemGroup>
@@ -149,6 +150,7 @@
     <ClInclude Include="src\generic_constructs\dashed_line.hpp" />
     <ClInclude Include="src\generic_constructs\line.hpp" />
     <ClInclude Include="src\generic_constructs\point.hpp" />
+    <ClInclude Include="src\lb_elements\connector.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
